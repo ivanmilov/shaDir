@@ -9,19 +9,27 @@
 
 std::deque<std::string> fileList(const std::string& path)
 {
-	boost::filesystem::path p{path};
-
-	boost::filesystem::directory_iterator end;
-
 	std::deque<std::string> files;
-	for(boost::filesystem::directory_iterator i(p);
-		i != end;
-		++i)
+
+	try
 	{
-		if(boost::filesystem::is_regular_file(i->path()))
+		boost::filesystem::path p{path};
+
+		boost::filesystem::directory_iterator end;
+
+		for(boost::filesystem::directory_iterator i(p);
+			i != end;
+			++i)
 		{
-			files.emplace_back(i->path().string());
+			if(boost::filesystem::is_regular_file(i->path()))
+			{
+				files.emplace_back(i->path().string());
+			}
 		}
+	}
+	catch(std::exception& e)
+	{
+		std::cerr << e.what() << std::endl;
 	}
 
 	return files;
@@ -53,7 +61,6 @@ std::pair<std::string, std::string> shaSum(const std::string& file, const unsign
 void threadsSha(const std::string& dir, const unsigned chankSize, const unsigned threadsCount)
 {
 	auto files = fileList(dir);
-	size_t count = files.size();
 
 	std::vector<boost::shared_future<std::pair<std::string, std::string>>> futures;
 
