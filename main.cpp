@@ -93,10 +93,10 @@ int main(int argc, char* argv[])
 	
 	boost::program_options::options_description desc("Allowed options");
 	desc.add_options()
-	("help", "Shows this message")
+	("help,h", "Shows this message")
 	("threads,t", boost::program_options::value<unsigned>(&threadCount)->default_value(2), "threads count for calculating")
 	("chanksize,s", boost::program_options::value<unsigned>(&chankSize)->default_value(10*1000*1000), "bytes to read per time")
-	("dir,d", boost::program_options::value<std::string>(&dir)->default_value("../data"), "directory with files")
+	("dir,d", boost::program_options::value<std::string>(&dir)->default_value("."), "directory with files")
 	;
 	boost::program_options::variables_map vm;
 	boost::program_options::store(boost::program_options::parse_command_line(argc, argv, desc), vm);
